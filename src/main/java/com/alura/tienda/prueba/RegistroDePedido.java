@@ -1,36 +1,40 @@
 package com.alura.tienda.prueba;
 
 import com.alura.tienda.dao.CategoriaDao;
+import com.alura.tienda.dao.ClienteDao;
+import com.alura.tienda.dao.PedidoDao;
 import com.alura.tienda.dao.ProductoDao;
-import com.alura.tienda.modelo.Categoria;
-import com.alura.tienda.modelo.Producto;
+import com.alura.tienda.modelo.*;
 import com.alura.tienda.utils.JPAUtils;
+import com.alura.tienda.vo.RelatoriaDeVenta;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class RegistroDeProducto {
+
+public class RegistroDePedido {
     public static void main(String[] args) {
         registrarProducto();
         EntityManager entityManager =  JPAUtils.getEntityManager();
         ProductoDao productoDao = new ProductoDao(entityManager);
-
-
         Producto producto = productoDao.consultaPorId(1L);
-        System.out.println(producto.getNombre());
-//
-        List<Producto> productos = productoDao.consultaPorNombre("Xiaomi Redmi");
-        List<Producto> productos1 = productoDao.consultaPorNombreDeCategoria("CELULARES");
-        productos.forEach(producto1 -> System.out.println(producto1.getDescripcion()));
-        productos1.forEach(producto1 -> System.out.println(producto1.getNombre()));
-        BigDecimal precio = productoDao.consultarPrecioPorNombreDeProducto("Xiaomi Redmi");
-        System.out.println(precio);
-        List<Producto> productos2 = productoDao.consultarPorParametros("Xiaomi Redmi", null, null);
-        System.out.println(productos2.getFirst().getDescripcion());
+        BigDecimal prueba = productoDao.consultarPrecioPorNombreDeProducto("Xiaomi Redmi");
+        System.out.println("prueba de consulta en la entidad el valor es: " + prueba);
 
+        Cliente cliente = new Cliente("Juan","119312332");
+        Pedido pedido = new Pedido(cliente);
+        pedido.agregarItems(new ItemsPedido(5,producto,pedido));
+        ClienteDao clienteDao = new ClienteDao(entityManager);
+        PedidoDao pedidoDao = new  PedidoDao(entityManager);
+        entityManager.getTransaction().begin();
+        clienteDao.guardar(cliente);
+        pedidoDao.guardar(pedido);
+        entityManager.getTransaction().commit();
+        BigDecimal valorTotal = pedidoDao.valorTotalVendido();
+        System.out.println("El valor total es "+valorTotal);
+        List<RelatoriaDeVenta>  relatorio = pedidoDao.relatorioDeVentasVo();
+        relatorio.forEach(System.out::println);
 
     }
     private static void registrarProducto(){
