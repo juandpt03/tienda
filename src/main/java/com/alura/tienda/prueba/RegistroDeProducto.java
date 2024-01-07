@@ -28,7 +28,9 @@ public class RegistroDeProducto {
         productos1.forEach(producto1 -> System.out.println(producto1.getNombre()));
         BigDecimal precio = productoDao.consultarPrecioPorNombreDeProducto("Xiaomi Redmi");
         System.out.println(precio);
-
+        List<Producto> productos2 = productoDao.consultarPorParametros("Xiaomi Redmi", null, null);
+        String descripcion = productos2.getFirst().getDescripcion();
+        System.out.println(descripcion);
 
 
     }
