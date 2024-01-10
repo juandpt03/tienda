@@ -24,7 +24,7 @@ public class CategoriaDao {
 
     }
     public Categoria consultaPorNombre(String nombre){
-        String jpql = "SELECT C FROM Categoria AS C WHERE C.nombre =:nombre";
+        String jpql = "SELECT C FROM Categoria AS C WHERE C.categoriaId.nombre =:nombre";
 
         return em.createQuery(jpql,Categoria.class).setParameter("nombre", nombre).getSingleResult();
 

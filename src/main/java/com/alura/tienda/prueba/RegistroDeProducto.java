@@ -3,6 +3,7 @@ package com.alura.tienda.prueba;
 import com.alura.tienda.dao.CategoriaDao;
 import com.alura.tienda.dao.ProductoDao;
 import com.alura.tienda.modelo.Categoria;
+import com.alura.tienda.modelo.CategoriaId;
 import com.alura.tienda.modelo.Producto;
 import com.alura.tienda.utils.JPAUtils;
 
@@ -22,16 +23,17 @@ public class RegistroDeProducto {
         Producto producto = productoDao.consultaPorId(1L);
         System.out.println(producto.getNombre());
 
-        List<Producto> productos = productoDao.consultaPorNombre("Xiaomi Redmi");
-        List<Producto> productos1 = productoDao.consultaPorNombreDeCategoria("CELULARES");
-        productos.forEach(producto1 -> System.out.println(producto1.getDescripcion()));
-        productos1.forEach(producto1 -> System.out.println(producto1.getNombre()));
-        BigDecimal precio = productoDao.consultarPrecioPorNombreDeProducto("Xiaomi Redmi");
-        System.out.println(precio);
-        List<Producto> productos2 = productoDao.consultarPorParametros("Xiaomi Redmi", new BigDecimal(1000), null);
-        String descripcion = productos2.getFirst().getDescripcion();
-        System.out.println(descripcion);
-
+//        List<Producto> productos = productoDao.consultaPorNombre("Xiaomi Redmi");
+//        List<Producto> productos1 = productoDao.consultaPorNombreDeCategoria("CELULARES");
+//        productos.forEach(producto1 -> System.out.println(producto1.getDescripcion()));
+//        productos1.forEach(producto1 -> System.out.println(producto1.getNombre()));
+//        BigDecimal precio = productoDao.consultarPrecioPorNombreDeProducto("Xiaomi Redmi");
+//        System.out.println(precio);
+//        List<Producto> productos2 = productoDao.consultarPorParametros("Xiaomi Redmi", new BigDecimal(1000), null);
+//        String descripcion = productos2.getFirst().getDescripcion();
+//        System.out.println(descripcion);
+        Categoria celulares = entityManager.find(Categoria.class, new CategoriaId("CELULARES", "456"));
+        System.out.println(celulares.getNombre());
 
     }
     private static void registrarProducto(){
